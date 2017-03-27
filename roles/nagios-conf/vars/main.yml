@@ -9,11 +9,11 @@ some_dict:
   host1:
     index: 0
     name: nrpe1_centos7
-    nrpe_hostadd: "ip-172-31-9-14.us-west-2.compute.internal"
-    nrpe_ip: "172.31.9.14"
+    nrpe_hostadd: "ip-174-33-9-14.us-west-2.compute.internal"
+    nrpe_ip: "173.31.9.12"
 
   host2:
     index: 1
     name: nrpe2_centos7
-    nrpe_hostadd: "ip-172-31-4-146.us-west-2.compute.internal"
-    nrpe_ip: "172.31.4.146"
+    nrpe_hostadd: "ip-192-34-4-146.us-west-2.compute.internal"
+    nrpe_ip: "172.21.6.146"

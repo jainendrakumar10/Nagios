@@ -43,11 +43,11 @@ Install Nagios and setup the password for your nagios admin user.
 *Contents of vars/main.yml*:
 
     nagios_users:
-	- user: compose
-	  pass: Canopy1!
+	- user: jainendra
+	  pass: jainendra
 
-    download_dir: /home/compose/nagios
+    download_dir: /home/jainendra/nagios
 
-    monitoring_user: compose
-    monitoring_command_group: compose
+    monitoring_user: jainendra
+    monitoring_command_group: jainendra
 

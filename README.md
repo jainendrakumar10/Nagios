@@ -8,7 +8,7 @@ Requirements
 
 	Add below line into /etc/sudoers on target machine after "Same thing without a password"
 
-	compose ALL=(ALL) NOPASSWD: ALL
+	jainendra ALL=(ALL) NOPASSWD: ALL
 
 	add host ip into /etc/hosts file
 
@@ -28,14 +28,14 @@ Dependencies
 
 How to run Playbook
 ----------------
-		[compose@centos66 ansible-compose-nagios]$ ansible-playbook  site.yml -i inventory/nagios-servers
+		[jainendra@centos66 Nagios]$ ansible-playbook  site.yml -i inventory/nagios-servers
  
 License
 -------
 
-None
+NA
 
 Author Information
 ------------------
-compose
+NA
 

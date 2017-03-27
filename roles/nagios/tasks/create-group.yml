@@ -1,0 +1,10 @@
+---
+- name: create {{ monitoring_command_group }} group
+  group: name={{ monitoring_command_group }} state=present
+
+- name: create {{ monitoring_user }} user
+  user: name={{ monitoring_user }} state=present groups={{ monitoring_command_group }}
+
+- name: add apache user to {{ monitoring_command_group }} group
+  user: name={{ apache_user }} state=present groups={{ monitoring_command_group }}
+

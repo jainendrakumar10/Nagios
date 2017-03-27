@@ -1,0 +1,12 @@
+---
+- name: disable SELinux
+  command: setenforce 0
+  ignore_errors: True
+
+- name: put Selinux in permissive mode
+  lineinfile:
+    dest: /etc/selinux/config
+    regexp: '^SELINUX='
+    line: 'SELINUX=permissive'
+
+

@@ -1,0 +1,13 @@
+---
+- name: install NTP Server.
+  yum: name={{ ntpd_package }} state=installed
+
+- name: set the correct timezone.
+  file: src=/usr/share/zoneinfo/{{ ntp_timezone }}  dest=/etc/localtime state=link force=yes
+
+- name: copy NTP configure file
+  template:  dest=/etc/ntp.conf src=ntp.conf.j2
+  notify: restart ntpd
+
+- name: ensure NTP Service is started and enabled at system start.
+  service: name="{{ ntpd_daemon }}" state=started enabled=yes

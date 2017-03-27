@@ -1,0 +1,16 @@
+---
+# Nagios NRPE Server for RedHat based OS's
+# The EPEL repo is required for this package
+
+- name: downloading and enable the EPEL repository definitions.
+  yum: name=epel-release state=installed
+
+- name: install Nagios NRPE Server
+  yum: name={{ item }} state=present
+  with_items:
+    - nagios-nrpe
+    - libselinux-python
+
+- name: install Nagios NRPE Plugins
+  yum: name=nagios-plugins-all state=present 
+  notify: restart nagios-nrpe-server

@@ -1,0 +1,25 @@
+---
+
+- name: get plugins
+  get_url: url={{ pluginsurl }} dest={{ download_dir }}/{{ pluginssrc }}.tar.gz
+
+- name: unpack plugin source files
+  shell: cd {{ download_dir }} && tar -xzvf {{ pluginssrc }}.tar.gz creates={{ download_dir }}/{{ pluginssrc }}
+
+- name: configure plugins
+  shell: cd {{ download_dir }}/{{ pluginssrc }} && ./configure --with-nagios-user={{ monitoring_user }} --with-nagios-group={{ monitoring_command_group }} creates={{ download_dir }}/{{ pluginssrc }}/Makefile
+
+- name: make plugins
+  shell: cd {{ download_dir }}/{{ pluginssrc }} && make creates={{ download_dir }}/{{ pluginssrc }}/plugins/check_ping
+
+- name: make install plugins
+  shell: cd {{ download_dir }}/{{ pluginssrc }} && make install creates=/usr/local/nagios/libexec/check_ping
+
+- name: install nrpe plugin for nagios
+  yum: name=nagios-plugins-nrpe state=present
+
+- name: copy check_nrpe plugin in nagios libexec
+  copy: remote_src=True src=/usr/lib64/nagios/plugins/check_nrpe dest=/usr/local/nagios/libexec/check_nrpe  mode=0755
+  ignore_errors: true
+
+

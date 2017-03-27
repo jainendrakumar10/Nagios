@@ -1,0 +1,14 @@
+---
+# vars file for nagios
+
+monitoring_user: jainendra
+monitoring_command_group: jainendra
+
+# Directory that will be used as the location for the downloads§
+download_dir: /home/jainendra/nagios
+
+# This is a list of users allowed to login to the nagios web frontend
+nagios_users:
+  - user: jainendra
+    pass: jainendra
+

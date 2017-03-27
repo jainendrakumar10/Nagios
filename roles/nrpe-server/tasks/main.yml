@@ -1,0 +1,16 @@
+---
+# Nagios NRPE Server role
+
+- name: include variables
+  include_vars: main.yml
+
+- include: packages.yml
+
+- include: create-cfg.yml
+
+- include: install-plugin.yml
+
+- include: set-selinux.yml
+
+- include: open-port.yml
+

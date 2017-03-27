@@ -1,0 +1,18 @@
+---
+
+- name: check if file exists
+  stat:
+    path: /usr/local/nagios/etc/objects/{{ item.value.name }}.cfg
+  register: hello
+  with_dict:    "{{ some_dict }}"
+
+- name: create cfg from template
+  template:
+    src: client.cfg.j2
+    dest: /usr/local/nagios/etc/objects/{{ item.value.name }}.cfg
+    owner: "{{ nagios_user }}"
+    group: "{{ nagios_group }}"
+    mode: 0664
+  when: "{{ hello.results[item.value.index].stat.exists }} == False "
+  with_dict: "{{ some_dict }}"
+

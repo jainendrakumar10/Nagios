@@ -1,0 +1,19 @@
+---
+## Sync our plugins
+- name: install global plugins
+  copy: >
+    src="{{ item }}"
+    dest="{{ nagios_nrpe_server_plugins_dir }}/"
+    owner=root group=root mode=0755
+  with_fileglob:
+    - plugins/global/*
+
+## Install per-server plugins
+#- name: install per-server plugins
+#  copy: >
+#    src="{{ item }}"
+#    dest="{{ nagios_nrpe_server_plugins_dir }}/"
+#    owner=root group=root mode=0755
+#  with_fileglob:
+#    - "plugins/{{ ansible_fqdn }}/*"
+

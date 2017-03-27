@@ -1,0 +1,22 @@
+---
+#- name: ensure iptables is configured to allow port 5666/tcp
+#  lineinfile:
+#    dest=/etc/sysconfig/iptables 
+#    state=present 
+#    regexp="^.*INPUT.*tcp.*5666.*ACCEPT"
+#    insertafter="^.*INPUT.*ESTABLISHED,RELATED.*ACCEPT" line="-A INPUT -m state --state NEW -m tcp -p tcp --dport 5666 -j ACCEPT" 
+#
+#  notify: restart iptables
+#
+- name: insert iptables rule to open port 5666/tcp
+  lineinfile: dest=/etc/sysconfig/iptables state=present regexp="-A INPUT -p tcp -m state --state NEW -m tcp --dport 5666 -j ACCEPT"
+              insertbefore="^-A INPUT -j REJECT" line="-A INPUT -p tcp -m state --state NEW -m tcp --dport 5666 -j ACCEPT"
+
+- name: restart iptables
+  service: name=iptables state=restarted
+
+
+# Ensure NRPE server is running and will start at boot
+- name: ensure NRPE server is running
+  service: name="{{ nagios_nrpe_server_service }}" state=started enabled=yes
+

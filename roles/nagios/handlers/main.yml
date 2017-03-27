@@ -1,0 +1,11 @@
+---
+# handlers file for nagios
+
+- name: restart iptables
+  service:
+    name: "{{ iptables_service }}"
+    state: restarted
+
+- name: restart apache
+  service: name={{ apache_service }} state=restarted enabled=yes
+

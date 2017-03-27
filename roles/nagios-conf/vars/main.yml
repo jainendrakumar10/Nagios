@@ -1,0 +1,19 @@
+---
+# variables needed for cfg file 
+
+nagios_user: jainendra
+nagios_group: jainendra
+
+
+some_dict:
+  host1:
+    index: 0
+    name: nrpe1_centos7
+    nrpe_hostadd: "ip-172-31-9-14.us-west-2.compute.internal"
+    nrpe_ip: "172.31.9.14"
+
+  host2:
+    index: 1
+    name: nrpe2_centos7
+    nrpe_hostadd: "ip-172-31-4-146.us-west-2.compute.internal"
+    nrpe_ip: "172.31.4.146"

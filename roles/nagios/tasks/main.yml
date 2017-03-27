@@ -1,0 +1,20 @@
+---
+# tasks file for nagios
+
+- name: include variables
+  include_vars: main.yml
+
+- include: epel-repo.yml
+
+- include: prerequisites.yml
+
+- include: create-group.yml
+
+- include: build-nagios.yml
+
+- include: build-plugins.yml
+
+- include: selinux.yml
+
+- include: configure-iptables.yml
+

@@ -1,0 +1,4 @@
+---
+# handlers file for nagios
+- name: reload nagios-server
+  service: name=nagios state=reloaded

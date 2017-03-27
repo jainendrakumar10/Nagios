@@ -1,0 +1,9 @@
+---
+- name: add service file in nagios.cfg
+  lineinfile:
+    dest: /usr/local/nagios/etc/nagios.cfg
+    line: 'cfg_file=/usr/local/nagios/etc/objects/{{ item.value.name }}.cfg'
+  with_dict: "{{ some_dict }}"
+  notify: reload nagios-server
+
+

@@ -1,0 +1,6 @@
+---
+
+- include: create-cfg.yml
+
+- include: update-nagios-cfg.yml
+

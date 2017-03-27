@@ -1,0 +1,33 @@
+---
+
+- name: ensure download directory is present
+  file: path={{ download_dir }} state=directory
+
+- name: install apache
+  yum: pkg={{ item }} state=present
+  with_items:
+   - php
+   - httpd
+   - libsemanage-python
+   - libselinux-python
+
+- name: install Nagios prerequisites for CentOS
+  yum: pkg={{ item }} state=present
+  with_items:
+   - gcc
+   - glibc
+   - glibc-common
+   - gd
+   - gd-devel
+   - make
+   - perl
+   - perl-devel
+   - wget
+   - python-passlib
+   - unzip
+
+- name: install plugin prerequisites for CentOS
+  yum: pkg={{ item }} state=present
+  with_items:
+   - samba-client
+   - libsmbclient

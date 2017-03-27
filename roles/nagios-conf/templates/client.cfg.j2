@@ -1,0 +1,40 @@
+
+############ HOST Definition ##############
+
+define host{
+        use                     linux-server            ; Name of host template to use
+        host_name               {{ item.value.name }}
+        alias                   {{ item.value.nrpe_hostadd }}
+        address                 {{ item.value.nrpe_ip }}
+        }
+
+############ Service Definition ###########
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       {{ item.value.name }}
+        service_description             Root Partition
+        check_command                   check_nrpe!check_root
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       {{ item.value.name }}
+        service_description             CPU Load
+        check_command                   check_nrpe!check_load
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       {{ item.value.name }}
+        service_description             RAM Usage
+        check_command                   check_nrpe!check_mem
+        }
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       {{ item.value.name }}
+        service_description             NTPD Service Status
+        check_command                   check_nrpe!check_ntpd
+        }
+

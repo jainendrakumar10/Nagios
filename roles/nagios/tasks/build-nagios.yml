@@ -1,0 +1,70 @@
+---
+- name: download Nagios
+  get_url: url={{ nagiosurl }} dest={{ download_dir }}/{{ nagiossrc }}.tar.gz
+
+- name: unpack Nagios source files
+  shell: cd {{ download_dir }} && tar -xzvf {{ nagiossrc }}.tar.gz creates={{ download_dir }}/{{ nagiossrc }}
+
+- name: configure Nagios
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && ./configure --with-command-group={{ monitoring_command_group }} -with-command-user={{ monitoring_user }} --with-nagios-user={{ monitoring_user }} --with-nagios-group={{ monitoring_command_group }} creates={{ download_dir }}/{{ nagiossrc }}/Makefile
+
+- name: make all
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make all creates={{ download_dir }}/{{ nagiossrc }}/base/nagios
+
+- name: make install
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install creates=/usr/local/nagios/bin/nagios
+
+- name: make install-config
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install-config creates=/usr/local/nagios/etc/nagios.cfg
+
+- name: make install-commandmode
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install-commandmode creates=/usr/local/nagios/var/rw
+
+- name: make install-devel
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install-devel creates=/usr/local/nagios/include/nagios/nagios.h
+
+- name: make install-webconf
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install-webconf creates={{ with_httpd_conf }}/nagios.conf
+  notify: restart apache
+
+- name: make install-init
+  shell: cd {{ download_dir }}/{{ nagiossrc }} && make install-init creates=/etc/init.d/nagios
+
+- name: set htpasswd for gui users
+  htpasswd: path=/usr/local/nagios/etc/htpasswd.users name={{ item.user }} password={{ item.pass }} state=present
+  with_items: "{{ nagios_users }}"
+
+- name: set access for user in configuration file.
+  replace: dest=/usr/local/nagios/etc/cgi.cfg regexp='nagiosadmin' replace={{ item.user }}
+  with_items: "{{ nagios_users }}"
+
+- name: add nrpe command definition in commands.cfg
+  lineinfile:
+    dest: /usr/local/nagios/etc/objects/commands.cfg
+    line: '{{ item }}'
+  with_items:
+    - '########### NRPE COMMAND ##############'
+    - '     define command{'
+    - '       command_name    check_nrpe'
+    - '       command_line    $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$'
+    - '     }'
+    - '###########################'
+
+
+- name: set refresh time
+  lineinfile: dest=/usr/local/nagios/etc/cgi.cfg state=present regexp="refresh_rate=5" line="refresh_rate=5"
+
+- name: set interval length
+  lineinfile: dest=/usr/local/nagios/etc/nagios.cfg state=present regexp="interval_length=10" line="interval_length=10"
+
+- name: ensure Nagios is started
+  command: /etc/rc.d/init.d/nagios start
+  become: yes
+  
+- name: add nagios services to system startup
+  command: chkconfig --add nagios
+
+- name: make nagios services on system startup
+  command: chkconfig nagios on
+
+

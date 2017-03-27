@@ -1,0 +1,15 @@
+galaxy_info:
+  author: compose
+  description: Configure Nagios to monitor remote host
+
+  min_ansible_version: 2.2
+
+  platforms:
+  - name: EL
+    versions: 7
+
+  galaxy_tags:
+    - nagios-conf
+
+dependencies: []
+

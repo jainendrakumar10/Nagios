@@ -1,0 +1,35 @@
+---
+- name: include OS-specific variables.
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "../vars/{{ ansible_os_family }}_{{ ansible_distribution_major_version }}.yml"
+    - "../vars/{{ ansible_os_family }}.yml"
+
+- name: Ensure firewalld is stopped and disabled
+  service: name=firewalld state=stopped enabled=no
+  when: ansible_distribution_major_version == "7"
+  failed_when: false
+
+- name:  Install iptables packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ iptables_pkgs }}"
+
+
+- name: configure template
+  template:
+    src: iptables.j2
+    dest:  "{{ iptables_config }}"
+    owner: root
+    group: root
+    mode: 0640
+  notify:  restart iptables
+
+- name: ensure iptables service is enabled
+  service:
+    name: "{{ iptables_service }}"
+    enabled: yes
+    state: started
+  changed_when: false
+

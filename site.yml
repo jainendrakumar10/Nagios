@@ -1,0 +1,7 @@
+---
+- include: nagios-main.yml
+
+- include: nrpe-main.yml
+
+- include: nagios-conf-main.yml
+

@@ -1,0 +1,10 @@
+---
+- hosts: monitoring-servers
+  become: yes
+  vars_files:
+   - roles/nagios/vars/main.yml
+  roles:
+     - iptables
+     - ntp
+     - nagios
+

@@ -1,0 +1,8 @@
+- hosts: nrpe-servers
+  become: yes
+  vars_files:
+   - roles/nrpe-server/vars/main.yml
+  roles:
+     - iptables
+     - ntp
+     - nrpe-server
